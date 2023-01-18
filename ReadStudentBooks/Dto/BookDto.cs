@@ -1,10 +1,12 @@
 ﻿namespace ReadStudentBooks.Dto
 {
-    public class BookDto
+    public class AddBookDto
     {
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
-        public byte[] Content { get; set; }
-        public DateTime DatePublished { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public byte[]? Content { get; set; }
+        public byte[]? Image { get; set; }
+        public long Price { get; set; }
     }
 }

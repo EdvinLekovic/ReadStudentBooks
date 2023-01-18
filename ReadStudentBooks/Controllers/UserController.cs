@@ -17,16 +17,22 @@ namespace ReadStudentBooks.Controllers
             this.userRepository = userRepository;
         }
 
-        [HttpPost("/register")]
-        public User register(UserDto userDto)
+        [HttpPost("register")]
+        public User Register(UserDto userDto)
         {
             return this.userRepository.Register(userDto);
         }
 
-        [HttpPost("/get-user")]
-        public User GetUser(UsernameDto userDto)
+        [HttpPost("login")]
+        public User Login(AuthorizationDto authorizationDto)
         {
-            return this.userRepository.GetUserByUsername(userDto);
+            return this.userRepository.Login(authorizationDto);
+        }
+
+        [HttpPost("get-user")]
+        public User GetUser(string username)
+        {
+            return this.userRepository.GetUserByUsername(username);
         }
     }
 }

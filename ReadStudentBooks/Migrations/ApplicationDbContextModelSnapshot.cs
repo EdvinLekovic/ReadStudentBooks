@@ -41,6 +41,17 @@ namespace ReadStudentBooks.Migrations
                     b.Property<DateTime>("DatePublished")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<long>("Price")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -48,6 +59,92 @@ namespace ReadStudentBooks.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("ReadStudentBooks.Models.CreditCard", b =>
+                {
+                    b.Property<string>("TransactionalNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CvvCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ExpirationMonth")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpirationYear")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Money")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UsernameFK")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TransactionalNumber");
+
+                    b.HasIndex("UserName");
+
+                    b.ToTable("CreditCards");
+                });
+
+            modelBuilder.Entity("ReadStudentBooks.Models.User", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserName");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ReadStudentBooks.Models.CreditCard", b =>
+                {
+                    b.HasOne("ReadStudentBooks.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ReadStudentBooks.Models.User", b =>
+                {
+                    b.HasOne("ReadStudentBooks.Models.Book", null)
+                        .WithMany("Users")
+                        .HasForeignKey("BookId");
+                });
+
+            modelBuilder.Entity("ReadStudentBooks.Models.Book", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

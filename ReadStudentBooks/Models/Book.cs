@@ -11,15 +11,31 @@ namespace ReadStudentBooks.Models
         public int Id { get; set; }
         public string Title { get;  set; }
         public string Author { get; set; }
+        public string Description { get; set; } 
         public byte[] Content { get; set; }
-        public DateTime DatePublished { get; set; }
 
-        public Book(string title, string author, byte[] content, DateTime datePublished)
+        public byte[] Image { get; set; }
+        public DateTime DatePublished { get; set; }
+        public  List<User> Users { get; set; }
+
+        public long Price { get; set; }
+
+        public Book(
+            string title, 
+            string author, 
+            string description, 
+            byte[] content,
+            byte[] image,
+            long price)
         {
             Title = title;
             Author = author;
+            Description = description;
             Content = content;
-            DatePublished = datePublished;
+            Image = image;
+            DatePublished = new DateTime();
+            Users = new List<User>();
+            Price = price;
         }
     }
 }

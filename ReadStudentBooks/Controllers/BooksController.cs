@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReadStudentBooks.Data;
 using ReadStudentBooks.Dto;
 using ReadStudentBooks.Models;
+using ReadStudentBooks.Repository;
 
 namespace ReadStudentBooks.Controllers
 {
@@ -10,29 +11,47 @@ namespace ReadStudentBooks.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        public readonly ApplicationDbContext _db;
-        public BooksController(ApplicationDbContext _db) 
+        public readonly IBookRepository bookRepository;
+
+        public BooksController(IBookRepository bookRepository)
         {
-            this._db = _db;    
+            this.bookRepository = bookRepository;
         }
 
         [HttpGet]
-        public IQueryable<Book> getAllBooks()
+        public IQueryable<Book> GetAllBooks()
         {
-            return _db.Books;
+            return bookRepository.GetBooks();
         }
 
-        [HttpPost]
-        public Book addBook(BookDto bookDto)
+        [HttpGet("{id}")]
+        public Book GetBook([FromQuery] int id)
         {
-            Book book = new Book(
-                bookDto.Title, 
-                bookDto.Author, 
-                bookDto.Content, 
-                bookDto.DatePublished);
-            _db.Add(book);
-            _db.SaveChanges();
-            return book;
+            return bookRepository.GetBook(id);
+        }
+
+        [HttpGet("books-by-username/{username}")]
+        public IQueryable<Book> GetBooksByUsername([FromQuery] string username) 
+        {
+            return bookRepository.GetBooksByUsername(username);
+        }
+
+        [HttpPost("add-book")]
+        public Book AddBook([FromBody] AddBookDto bookDto)
+        {
+            return bookRepository.AddBook(bookDto);
+        }
+
+        [HttpPut("update-book")]
+        public Book UpdateBook(UpdateBookDto updateBookDto)
+        {
+            return bookRepository.UpdateBook(updateBookDto);
+        }
+
+        [HttpDelete("delete-by-id/{id}")]
+        public void DeleteBook(int id)
+        {
+            bookRepository.DeleteBook(id);
         }
     }
 }
